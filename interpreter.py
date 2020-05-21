@@ -44,6 +44,7 @@ builtins = {
     "f": False,
     "t": True,
     "nil": [],
+    "write-line": print,
     # Basic math operations
     "add": operator.add,
     "sub": operator.sub,
@@ -106,7 +107,7 @@ def evaluate(scope, obj):
     elif obj.type == "SYMBOL":
         return scope.get_value(obj)
     elif obj.type == "STRING":
-        return obj.value
+        return obj.value[1:-1]
     elif obj.type == "INT":
         return int(obj)
     elif obj.type == "FLOAT":
@@ -114,4 +115,5 @@ def evaluate(scope, obj):
 
 
 def interpret(code):
-    return (evaluate(Scope(builtins), obj) for obj in parser.parse(code))
+    for obj in parser.parse(code):
+        evaluate(Scope(builtins), obj)
